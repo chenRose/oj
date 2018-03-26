@@ -14,13 +14,13 @@ int initial(handler_interface_t *handler,dictionary *handler_ini)
 }
 int work()
 {
-	
 	printf("[%s:%d]\tworker start to work...\n",g_handler->name,getpid());
 	while(1)
 	{
 		mymsg_t *msg=malloc(sizeof(mymsg_t));	
 		int iRet = msgrcv(g_handler->msg_id,msg,2048,g_handler->seq_num,0);//block until new command 
-		printf("[%s:%d]\tread %d bytes data:\n%s\n",g_handler->name,getpid(),iRet,msg->cmd);
+        printf("[%s:%d]\tread %d bytes data:\n%s\n",g_handler->name,getpid(),iRet,msg->cmd);
+
 		free(msg);
 	}
 	

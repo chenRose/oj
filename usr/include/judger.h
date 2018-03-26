@@ -3,9 +3,9 @@
 
 #include "log.h"
 #include "iniparser.h"
-
+#include<sys/msg.h>
 typedef struct {
-	const char *core_ip;
+	const char *core_host;
 	int  core_port;
 	const char *redis_ip;
 	int  redis_port;
@@ -62,9 +62,8 @@ typedef struct {
 
 }mymsg_t;
 
-int default_load_ini(loader_interface_t *loader,handler_interface_t *handler,dictionary *handler_ini,int seqnum,int msg_id)
+int default_load_ini(loader_interface_t *loader,handler_interface_t *handler,dictionary *handler_ini,int seqnum)
 {
-		handler->msg_id=msg_id;
 		handler->seq_num=seqnum;
 
 
@@ -79,6 +78,7 @@ int default_load_ini(loader_interface_t *loader,handler_interface_t *handler,dic
         sprintf(item+index,"worker");
         handler->n_worker = iniparser_getint(handler_ini,item,0);
 
+		
         sprintf(item+index,"enable");
         handler->workable= strcasecmp(iniparser_getstring(handler_ini,item,NULL),"true")?0:1;
 
@@ -100,5 +100,7 @@ int default_load_ini(loader_interface_t *loader,handler_interface_t *handler,dic
             handler->module_name = item_path;
             snprintf(handler->module_path,sizeof(handler->module_path),"%s/%s",handler->module_dir,handler->module_name);
         }
+		
+		handler->msg_id = msgget(ftok(handler->module_path,handler->n_worker),IPC_CREAT);
 }
 #endif
