@@ -1,0 +1,7 @@
+In file included from c_include.c:1:0:
+/home/oj/etc/core_connect.ini:1:1: error: expected identifier or ‘(’ before ‘[’ token
+ [redis]
+ ^
+/home/oj/etc/core_connect.ini:2:8: error: too many decimal points in number
+ host = 127.0.0.1
+        ^
